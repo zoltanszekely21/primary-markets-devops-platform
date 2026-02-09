@@ -1,0 +1,14 @@
+{
+  "name": "[primary-markets][dev] API p95 latency high",
+  "type": "metric alert",
+  "query": "avg(last_5m):p95:trace.http.request.duration{service:api-service,env:dev} > 0.3",
+  "message": "API p95 latency is above threshold.\n\nRunbook: docs/sre-ops/runbooks/rb-001-api-latency.md",
+  "tags": ["project:primary-markets", "env:dev", "service:api-service", "severity:sev2"],
+  "options": {
+    "thresholds": { "critical": 0.3 },
+    "notify_no_data": false,
+    "evaluation_delay": 60,
+    "renotify_interval": 0,
+    "include_tags": true
+  }
+}

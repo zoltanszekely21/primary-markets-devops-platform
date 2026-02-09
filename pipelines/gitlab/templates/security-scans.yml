@@ -1,0 +1,6 @@
+tf_scan:
+  stage: scan
+  image: bridgecrew/checkov:latest
+  script:
+    - checkov -d infra/terraform --quiet
+  allow_failure: true

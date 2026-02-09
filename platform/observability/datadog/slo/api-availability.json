@@ -1,0 +1,13 @@
+{
+  "name": "API Availability (30d) - dev",
+  "type": "metric",
+  "description": "Availability based on request success ratio.",
+  "query": {
+    "numerator": "sum:trace.http.request.hits{service:api-service,env:dev} - sum:trace.http.request.errors{service:api-service,env:dev}",
+    "denominator": "sum:trace.http.request.hits{service:api-service,env:dev}"
+  },
+  "thresholds": [
+    { "timeframe": "30d", "target": 99.9, "warning": 99.95 }
+  ],
+  "tags": ["project:primary-markets", "env:dev", "service:api-service"]
+}

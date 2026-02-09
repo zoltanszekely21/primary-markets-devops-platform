@@ -1,0 +1,8 @@
+deploy_placeholder:
+  stage: deploy
+  image: alpine:3.20
+  script:
+    - echo "Deploy will be enabled after EKS + Helm charts exist."
+    - echo "Planned: helm upgrade --install ..."
+  rules:
+    - when: manual

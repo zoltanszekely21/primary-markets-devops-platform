@@ -1,0 +1,41 @@
+.terraform_base:
+  image: hashicorp/terraform:${TF_VERSION}
+  before_script:
+    - terraform --version
+
+terraform_fmt:
+  stage: validate
+  extends: .terraform_base
+  script:
+    - cd infra/terraform
+    - terraform fmt -check -recursive
+
+terraform_plan:
+  stage: infra_plan
+  extends: .terraform_base
+  script:
+    - cd infra/terraform/envs/$ENVIRONMENT
+    - terraform init
+    - terraform plan -out tfplan
+  artifacts:
+    paths:
+      - infra/terraform/envs/$ENVIRONMENT/tfplan
+    expire_in: 1 day
+
+terraform_apply:
+  stage: infra_apply
+  extends: .terraform_base
+  script:
+    - cd infra/terraform/envs/$ENVIRONMENT
+    - terraform init
+    - terraform apply -auto-approve tfplan
+  dependencies:
+    - terraform_plan
+  rules:
+    - if: '$ENVIRONMENT == "dev" && $CI_COMMIT_BRANCH == "main"'
+      when: on_success
+    - if: '$ENVIRONMENT == "uat"'
+      when: manual
+    - if: '$ENVIRONMENT == "prod"'
+      when: manual
+      allow_failure: false

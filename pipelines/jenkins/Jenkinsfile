@@ -1,0 +1,40 @@
+pipeline {
+  agent any
+  options { timestamps(); disableConcurrentBuilds() }
+
+  parameters {
+    choice(name: 'ENV', choices: ['dev','uat','prod'], description: 'Target environment')
+    booleanParam(name: 'APPLY', defaultValue: false, description: 'Apply Terraform (otherwise plan only)')
+  }
+
+  stages {
+    stage('Checkout') { steps { checkout scm } }
+
+    stage('Terraform fmt') {
+      steps {
+        sh 'cd infra/terraform && terraform fmt -check -recursive'
+      }
+    }
+
+    stage('Terraform plan') {
+      steps {
+        sh """
+          cd infra/terraform/envs/${params.ENV}
+          terraform init
+          terraform plan -out tfplan
+        """
+      }
+    }
+
+    stage('Terraform apply') {
+      when { expression { return params.APPLY } }
+      steps {
+        input message: "Apply to ${params.ENV}?", ok: "Apply"
+        sh """
+          cd infra/terraform/envs/${params.ENV}
+          terraform apply -auto-approve tfplan
+        """
+      }
+    }
+  }
+}

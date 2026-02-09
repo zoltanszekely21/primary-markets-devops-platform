@@ -1,0 +1,15 @@
+datadog:
+  apiKeyExistingSecret: datadog-secret
+  site: datadoghq.eu
+  tags:
+    - "project:primary-markets"
+    - "env:uat"
+  logs:
+    enabled: true
+    containerCollectAll: true
+  apm:
+    enabled: true
+clusterAgent:
+  enabled: true
+agents:
+  enabled: true

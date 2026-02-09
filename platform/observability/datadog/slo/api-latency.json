@@ -1,0 +1,13 @@
+{
+  "name": "API Latency SLO (30d) - dev",
+  "type": "metric",
+  "description": "Latency SLO using p95 threshold.",
+  "query": {
+    "numerator": "sum:trace.http.request.hits{service:api-service,env:dev} - sum:trace.http.request.hits{service:api-service,env:dev,latency:gt_300ms}",
+    "denominator": "sum:trace.http.request.hits{service:api-service,env:dev}"
+  },
+  "thresholds": [
+    { "timeframe": "30d", "target": 99.0, "warning": 99.5 }
+  ],
+  "tags": ["project:primary-markets", "env:dev", "service:api-service"]
+}

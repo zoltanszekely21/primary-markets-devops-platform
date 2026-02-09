@@ -1,0 +1,12 @@
+{
+  "name": "[primary-markets][dev] Node NotReady",
+  "type": "metric alert",
+  "query": "max(last_5m):kubernetes_state.node.status{status:not_ready,env:dev} > 0",
+  "message": "One or more nodes are NotReady.\n\nRunbook: docs/sre-ops/runbooks/rb-003-eks-node-notready.md (to be added next)",
+  "tags": ["project:primary-markets", "env:dev", "severity:sev2"],
+  "options": {
+    "thresholds": { "critical": 0 },
+    "notify_no_data": false,
+    "include_tags": true
+  }
+}

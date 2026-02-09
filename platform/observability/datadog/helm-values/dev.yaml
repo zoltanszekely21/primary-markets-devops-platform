@@ -1,0 +1,37 @@
+datadog:
+  # API key is stored in a K8s secret named "datadog-secret" in namespace "datadog"
+  apiKeyExistingSecret: datadog-secret
+
+  site: datadoghq.eu   # change to datadoghq.com if your account is US
+  tags:
+    - "project:primary-markets"
+    - "env:dev"
+
+  logs:
+    enabled: true
+    containerCollectAll: true
+
+  apm:
+    enabled: true
+
+  processAgent:
+    enabled: true
+
+  kubeStateMetricsEnabled: true
+
+  # Keep noise down; enable as you need
+  collectEvents: true
+
+clusterAgent:
+  enabled: true
+
+agents:
+  enabled: true
+
+# Optional: turn on kubelet TLS verify adjustments only if needed
+# agents:
+#   containers:
+#     agent:
+#       env:
+#         - name: DD_KUBELET_TLS_VERIFY
+#           value: "true"

@@ -1,0 +1,57 @@
+{
+  "title": "Primary Markets - Overview (dev)",
+  "description": "Golden signals overview for Primary Markets platform (dev).",
+  "widgets": [
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "API Request Rate",
+        "requests": [
+          {
+            "q": "sum:trace.http.request.hits{service:api-service,env:dev}.as_count()",
+            "display_type": "line"
+          }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "API p95 Latency",
+        "requests": [
+          {
+            "q": "p95:trace.http.request.duration{service:api-service,env:dev}",
+            "display_type": "line"
+          }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "API Error Rate (5xx)",
+        "requests": [
+          {
+            "q": "sum:trace.http.request.errors{service:api-service,env:dev}.as_count()",
+            "display_type": "line"
+          }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "Pod Restarts",
+        "requests": [
+          {
+            "q": "sum:kubernetes.containers.restarts{kube_namespace:primary-markets,env:dev}",
+            "display_type": "line"
+          }
+        ]
+      }
+    }
+  ],
+  "template_variables": [
+    { "name": "env", "prefix": "env", "default": "dev" }
+  ]
+}

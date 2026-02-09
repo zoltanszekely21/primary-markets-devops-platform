@@ -1,0 +1,13 @@
+{
+  "name": "[primary-markets][dev] API 5xx rate high",
+  "type": "metric alert",
+  "query": "sum(last_5m):trace.http.request.errors{service:api-service,env:dev} / sum(last_5m):trace.http.request.hits{service:api-service,env:dev} * 100 > 2",
+  "message": "API 5xx error rate is above threshold.\n\nRunbook: docs/sre-ops/runbooks/rb-002-api-5xx.md",
+  "tags": ["project:primary-markets", "env:dev", "service:api-service", "severity:sev1"],
+  "options": {
+    "thresholds": { "critical": 2 },
+    "notify_no_data": false,
+    "evaluation_delay": 60,
+    "include_tags": true
+  }
+}
